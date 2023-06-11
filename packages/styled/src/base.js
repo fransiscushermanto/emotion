@@ -116,27 +116,29 @@ let createStyled: CreateStyled = (tag: any, options?: StyledOptions) => {
           }
           mergedProps.theme = React.useContext(ThemeContext)
         }
-
-        if (typeof props.className === 'string') {
-          className = getRegisteredStyles(
-            cache.registered,
-            classInterpolations,
-            props.className
-          )
-        } else if (props.className != null) {
-          className = `${props.className} `
-        }
-
+        
         const serialized = serializeStyles(
           styles.concat(classInterpolations),
           cache.registered,
           mergedProps
         )
+         
         className += `${cache.key}-${serialized.name}`
+        
         if (targetClassName !== undefined) {
           className += ` ${targetClassName}`
         }
 
+        if (typeof props.className === 'string') {
+          className += getRegisteredStyles(
+            cache.registered,
+            classInterpolations,
+            props.className
+          )
+        } else if (props.className != null) {
+          className += `${props.className} `
+        }
+        
         const finalShouldForwardProp =
           shouldUseAs && shouldForwardProp === undefined
             ? getDefaultShouldForwardProp(FinalTag)
